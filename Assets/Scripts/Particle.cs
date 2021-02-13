@@ -7,15 +7,18 @@ public class Particle : MonoBehaviour
     Vector3 position;
     Vector3 velocity;
     Vector3 acceleration;
-    int age;
-    int maxAge;
-    int mass;
+    float age;
+    public float maxAge;
+    float mass;
+    private GameObject particle;
     // Start is called before the first frame update
     void Start()
     {
-        GameObject particle = new GameObject("Particle");
+        particle = new GameObject("Particle");
         createCubeMesh(particle);
         setCubeColor(particle, Color.red);
+        age = 0;
+        maxAge = 10;
 
         //particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
         //particle.transform.position = new Vector3(0, 0, 0);
@@ -25,10 +28,10 @@ public class Particle : MonoBehaviour
         acceleration = new Vector3(0, 0, 0);
     }
 
-    void setCubeColor(GameObject particle, Color color)
+    void setCubeColor(GameObject obj, Color color)
     {
         
-        particle.GetComponent<MeshRenderer>().material.SetColor("_Color", color); 
+        obj.GetComponent<MeshRenderer>().material.SetColor("_Color", color); 
     }
 
     void createCubeMesh(GameObject particle)
@@ -164,6 +167,20 @@ public class Particle : MonoBehaviour
     void Update()
     {
         ApplyForce(Time.deltaTime);
+        age += 1 * Time.deltaTime;
+        if(age >= maxAge)
+        {
+            Destroy(particle);
+        }
+        else if (age >= (maxAge*2) / 3)
+        {
+            setCubeColor(particle, Color.yellow);
+        }
+        else if(age >= maxAge / 3)
+        {
+            setCubeColor(particle, Color.blue);
+        }
+
     }
 
     //applys forces to the particle
