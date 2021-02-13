@@ -16,6 +16,7 @@ public class Particle : MonoBehaviour
     {
         particle = new GameObject("Particle");
         createCubeMesh(particle);
+        randomSizeCube(particle);
         setCubeColor(particle, Color.red);
         age = 0;
         maxAge = 10;
@@ -161,6 +162,14 @@ public class Particle : MonoBehaviour
         //create mesh renderer and material
         MeshRenderer renderer = particle.AddComponent<MeshRenderer>();
         Material material = renderer.material;
+    }
+
+    void randomSizeCube(GameObject particle)
+    {
+        float randomNum = Random.Range(0.0f, 1.0f);
+        Vector3 scale = new Vector3(randomNum, randomNum, randomNum);
+        //Mesh mesh = particle.GetComponent<MeshFilter>().mesh;
+        particle.transform.localScale -= scale;
     }
 
     // Update is called once per frame
