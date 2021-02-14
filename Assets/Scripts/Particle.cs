@@ -21,8 +21,9 @@ public class Particle : MonoBehaviour
         age = 0;
         maxAge = 10;
         //gives particle a random starting position
-        position = particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
+        //position = particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
         //particle.transform.position = new Vector3(0, 0, 0);
+        particle.transform.position = new Vector3(0, 9, 0);
         velocity = new Vector3(0, 0, 0);
         acceleration = new Vector3(0, -1, 0);
     }
