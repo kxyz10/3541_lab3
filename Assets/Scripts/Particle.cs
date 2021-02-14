@@ -20,11 +20,8 @@ public class Particle : MonoBehaviour
         setCubeColor(particle, Color.red);
         age = 0;
         maxAge = 10;
-
         //particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
         //particle.transform.position = new Vector3(0, 0, 0);
-        //particle.transform.localScale = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
-        //particle.transform.localScale = new Vector3(1.0f, 1.0f);
         velocity = new Vector3(0, 0, 0);
         acceleration = new Vector3(0, 0, 0);
     }

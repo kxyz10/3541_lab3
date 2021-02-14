@@ -7,7 +7,7 @@ public class ParticleEmitter : MonoBehaviour
 
     private GameObject particleEmitter;
     public int particlesPerTime = 1;
-    Particle particle;
+    public Particle particle;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +21,6 @@ public class ParticleEmitter : MonoBehaviour
     void Update()
     {
         Particle newParticle = Instantiate(particle, new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10)), transform.rotation);
-        particle.transform.position = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
+        //particle.transform.position = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
     }
 }
