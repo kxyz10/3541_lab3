@@ -6,8 +6,10 @@ public class ParticleEmitter : MonoBehaviour
 {
 
     private GameObject particleEmitter;
-    public int particlesPerTime = 1;
-    public Particle particle;
+    public int timeBetweenParticles = 1;
+    private int particlesEmitted = 0;
+    public GameObject ParticleObject;
+    public float time = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,18 @@ public class ParticleEmitter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Particle newParticle = Instantiate(particle, new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10)), transform.rotation);
-        //particle.transform.position = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
+        time += Time.deltaTime;
+        //want to have new particles spawn every second
+        if (time > timeBetweenParticles)
+        {
+            
+            GameObject newParticle = Instantiate(ParticleObject, Vector3.zero, transform.rotation);
+            newParticle.name = "Particle_" + particlesEmitted;
+            particlesEmitted += 1;
+            //newParticle.transform.position = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
+            //newParticle.transform.position = new Vector3(10, 5, 0);
+            time = 0;
+        }
+        
     }
 }

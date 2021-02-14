@@ -20,10 +20,11 @@ public class Particle : MonoBehaviour
         setCubeColor(particle, Color.red);
         age = 0;
         maxAge = 10;
-        //particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
+        //gives particle a random starting position
+        position = particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
         //particle.transform.position = new Vector3(0, 0, 0);
         velocity = new Vector3(0, 0, 0);
-        acceleration = new Vector3(0, 0, 0);
+        acceleration = new Vector3(0, -1, 0);
     }
 
     void setCubeColor(GameObject obj, Color color)
@@ -163,7 +164,7 @@ public class Particle : MonoBehaviour
 
     void randomSizeCube(GameObject particle)
     {
-        float randomNum = Random.Range(0.0f, 1.0f);
+        float randomNum = Random.Range(0.5f, 1.0f);
         Vector3 scale = new Vector3(randomNum, randomNum, randomNum);
         //Mesh mesh = particle.GetComponent<MeshFilter>().mesh;
         particle.transform.localScale -= scale;
@@ -172,7 +173,11 @@ public class Particle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ApplyForce(Time.deltaTime);
+        //if(particle != null)
+        //{
+        //    ApplyForce(Time.deltaTime);
+        //}
+        
         age += 1 * Time.deltaTime;
         if(age >= maxAge)
         {
@@ -187,6 +192,12 @@ public class Particle : MonoBehaviour
             setCubeColor(particle, Color.blue);
         }
 
+        //make sure we arent trying to reach a destroyed particle
+        if (age<maxAge)
+        {
+            ApplyForce(Time.deltaTime);
+        }
+
     }
 
     //applys forces to the particle
@@ -194,11 +205,11 @@ public class Particle : MonoBehaviour
     {
         //apply gravity
         Vector3 x;
-        x = transform.position;
+        x = particle.transform.position;
         Vector3 newVelocity = velocity + acceleration * time;
-        x = x + (velocity + newVelocity) / 2 * time;
+        x += (velocity + newVelocity) / 2 * time;
         velocity = newVelocity;
-        transform.position = x;
+        particle.transform.position = x;
 
         //check for other forces
         Vector3 collsions = Collision();
