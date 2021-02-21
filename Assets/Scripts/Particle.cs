@@ -11,10 +11,13 @@ public class Particle : MonoBehaviour
     public float maxAge;
     float mass;
     private GameObject particle;
+    private ParticleEmitter emitter;
+    private Plane plane;
     // Start is called before the first frame update
     void Start()
     {
         particle = new GameObject("Particle");
+        //particle.tag = "Particle";
         createCubeMesh(particle);
         randomSizeCube(particle);
         setCubeColor(particle, Color.red);
@@ -211,16 +214,21 @@ public class Particle : MonoBehaviour
         x += (velocity + newVelocity) / 2 * time;
         velocity = newVelocity;
         particle.transform.position = x;
-
-        //check for other forces
-        Vector3 collsions = Collision();
-
+        Collide(particle);
     }
 
     //returns a vector that is added velocity
-    Vector3 Collision()
+    public void Collide(GameObject particle)
     {
-        return (new Vector3(0, 0, 0));
+        ArrayList particleList = GameObject.Find("ParticleEmitterObject").GetComponent<ParticleEmitter>().particleList;
+        //for each particle see if im close and collide if so
+
+        //see if we hit the ground
+        if(particle.transform.position.y < 0)
+        {
+            //apply upward force
+        }
+
     }
 
 }

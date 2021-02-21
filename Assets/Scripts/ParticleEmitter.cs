@@ -10,6 +10,7 @@ public class ParticleEmitter : MonoBehaviour
     private int particlesEmitted = 0;
     public GameObject ParticleObject;
     public float time = 0;
+    public ArrayList particleList = new ArrayList();
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +34,25 @@ public class ParticleEmitter : MonoBehaviour
             GameObject newParticle = Instantiate(ParticleObject, Vector3.zero, transform.rotation);
             newParticle.name = "Particle_" + particlesEmitted;
             particlesEmitted += 1;
+            particleList.Add(newParticle);
             //newParticle.transform.position = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
             //newParticle.transform.position = new Vector3(10, 5, 0);
             time = 0;
         }
-        
+        //HandleAllParticleCollisions();
     }
+
+
+    //void HandleAllParticleCollisions()
+    //{
+    //    for(int i = 0; i < Particles.Count; i++)
+    //    {
+    //        for(int j = i+1; j < Particles.Count; j++)
+    //        {
+    //            Particles[i].
+    //        }
+    //    }
+    //}
 
 
     void createPyramidMesh(GameObject particleEmitter)
