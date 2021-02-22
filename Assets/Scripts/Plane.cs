@@ -5,7 +5,7 @@ using UnityEngine;
 public class Plane : MonoBehaviour
 {
     GameObject particle;
-    private GameObject plane;
+    public GameObject plane;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,12 +17,7 @@ public class Plane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //particle = GameObject.FindGameObjectWithTag("Particle").GetComponent<particle>();
-        //Vector3 particlePos = particle.transform.position;
-        //if (particlePos.y <= this.transform.position.y)
-        //{
-        //    particle.Collide(plane);
-        //}
+
     }
 
     void setPlaneColor(GameObject obj, Color color)
@@ -84,3 +79,4 @@ public class Plane : MonoBehaviour
         Material material = renderer.material;
     }
 }
+

@@ -30,29 +30,15 @@ public class ParticleEmitter : MonoBehaviour
         //want to have new particles spawn every second
         if (time > timeBetweenParticles)
         {
-            
             GameObject newParticle = Instantiate(ParticleObject, Vector3.zero, transform.rotation);
             newParticle.name = "Particle_" + particlesEmitted;
             particlesEmitted += 1;
             particleList.Add(newParticle);
-            //newParticle.transform.position = new Vector3(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
-            //newParticle.transform.position = new Vector3(10, 5, 0);
             time = 0;
         }
-        //HandleAllParticleCollisions();
+
     }
 
-
-    //void HandleAllParticleCollisions()
-    //{
-    //    for(int i = 0; i < Particles.Count; i++)
-    //    {
-    //        for(int j = i+1; j < Particles.Count; j++)
-    //        {
-    //            Particles[i].
-    //        }
-    //    }
-    //}
 
 
     void createPyramidMesh(GameObject particleEmitter)
@@ -190,3 +176,4 @@ public class ParticleEmitter : MonoBehaviour
         obj.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
     }
 }
+

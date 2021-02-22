@@ -9,38 +9,42 @@ public class Particle : MonoBehaviour
     Vector3 acceleration;
     float age;
     public float maxAge;
-    float mass;
+    public float size;
+    public float mass;
+    Mesh mesh;
     private GameObject particle;
-    private ParticleEmitter emitter;
-    private Plane plane;
     // Start is called before the first frame update
     void Start()
     {
         particle = new GameObject("Particle");
         //particle.tag = "Particle";
-        createCubeMesh(particle);
-        randomSizeCube(particle);
-        setCubeColor(particle, Color.red);
+        createCubeMesh();
+        randomSizeCube();
+        randomSizeCube();
+        setCubeColor(Color.red);
         age = 0;
         maxAge = 10;
-        //gives particle a random starting position
-        //position = particle.transform.position = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
-        //particle.transform.position = new Vector3(0, 0, 0);
-        particle.transform.position = new Vector3(0, 9, 0);
+        //gives particle a random starting position and rotation
+        float x = Random.Range(-2f, 2f);
+        float y = Random.Range(-2f, 2f);
+        float z = Random.Range(-2f, 2f);
+        float w = Random.Range(-2f, 2f);
+        particle.transform.position = new Vector3((x + y) / 2, 9, (z + w) / 2);
+        particle.transform.rotation = new Quaternion(x, y, z, w);
         velocity = new Vector3(0, 0, 0);
-        acceleration = new Vector3(0, -1, 0);
+        acceleration = new Vector3(0, -100, 0);
     }
 
-    void setCubeColor(GameObject obj, Color color)
+    void setCubeColor(Color color)
     {
-        
-        obj.GetComponent<MeshRenderer>().material.SetColor("_Color", color); 
+
+        particle.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
     }
 
-    void createCubeMesh(GameObject particle)
+    void createCubeMesh()
     {
         MeshFilter filter = particle.AddComponent<MeshFilter>();
-        Mesh mesh = filter.mesh;
+        mesh = filter.mesh;
         mesh.Clear();
 
         //verticies
@@ -166,38 +170,34 @@ public class Particle : MonoBehaviour
         Material material = renderer.material;
     }
 
-    void randomSizeCube(GameObject particle)
+    void randomSizeCube()
     {
         float randomNum = Random.Range(0.5f, 1.0f);
         Vector3 scale = new Vector3(randomNum, randomNum, randomNum);
-        //Mesh mesh = particle.GetComponent<MeshFilter>().mesh;
         particle.transform.localScale -= scale;
+        size = scale.x;
+        mass = scale.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if(particle != null)
-        //{
-        //    ApplyForce(Time.deltaTime);
-        //}
-        
         age += 1 * Time.deltaTime;
-        if(age >= maxAge)
+        if (age >= maxAge)
         {
             Destroy(particle);
         }
-        else if (age >= (maxAge*2) / 3)
+        else if (age >= (maxAge * 2) / 3)
         {
-            setCubeColor(particle, Color.yellow);
+            setCubeColor(Color.yellow);
         }
-        else if(age >= maxAge / 3)
+        else if (age >= maxAge / 3)
         {
-            setCubeColor(particle, Color.blue);
+            setCubeColor(Color.blue);
         }
 
         //make sure we arent trying to reach a destroyed particle
-        if (age<maxAge)
+        if (age < maxAge)
         {
             ApplyForce(Time.deltaTime);
         }
@@ -214,21 +214,44 @@ public class Particle : MonoBehaviour
         x += (velocity + newVelocity) / 2 * time;
         velocity = newVelocity;
         particle.transform.position = x;
-        Collide(particle);
+        Collide();
     }
 
     //returns a vector that is added velocity
-    public void Collide(GameObject particle)
+    public void Collide()
     {
         ArrayList particleList = GameObject.Find("ParticleEmitterObject").GetComponent<ParticleEmitter>().particleList;
-        //for each particle see if im close and collide if so
+        GameObject plane = GameObject.Find("PlaneObject").GetComponent<Plane>().plane;
 
-        //see if we hit the ground
-        if(particle.transform.position.y < 0)
+        // colides with other particle
+        for (int i = 0; i < particleList.Count; i++)
         {
-            //apply upward force
+            GameObject particle2 = (GameObject)particleList[i];
+            if (!particle2.Equals(particle))
+            {
+                if (particle2.transform.position.x <= particle.transform.position.x + size && particle2.transform.position.x >= particle.transform.position.x - size
+                    && particle2.transform.position.y <= particle.transform.position.y + size && particle2.transform.position.x >= particle.transform.position.x - size
+                    && particle2.transform.position.z <= particle.transform.position.z + size && particle2.transform.position.z >= particle.transform.position.z - size)
+                {
+                    //              Vector3 direction = new Vector3(position.x - particle2.transform.position.x, position.y - particle2.transform.position.y, position.z - particle2.transform.position.z); 
+                    //              velocity = new Vector3(velocity.x * (0.9f), velocity.y * (0.9f), velocity.z * (0.9f));
+                }
+            }
         }
+
+        //colides with plane
+        if (particle.transform.position.y - size <= plane.transform.position.y && velocity.y < 0)
+        {
+            //apply forceupward 
+            velocity.y = velocity.y * (-0.8f / mass);
+        }
+        else if (particle.transform.position.y < plane.transform.position.y)
+        {
+            position.y = plane.transform.position.y + size;
+        }
+
 
     }
 
 }
+
