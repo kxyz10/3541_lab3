@@ -13,6 +13,7 @@ public class Particle : MonoBehaviour
     public float mass;
     Mesh mesh;
     private GameObject particle;
+    Vector3[] vertices;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +49,7 @@ public class Particle : MonoBehaviour
         mesh.Clear();
 
         //verticies
-        Vector3[] vertices = new Vector3[]
+        vertices = new Vector3[]
         {
             //front
             new Vector3(-1,1,1),    //0: left top front
@@ -126,7 +127,7 @@ public class Particle : MonoBehaviour
             new Vector2(1,1),
             new Vector2(1,0),
             
-            //bottom
+            //back
             new Vector2(0,1),
             new Vector2(0,0),
             new Vector2(1,1),
@@ -222,29 +223,62 @@ public class Particle : MonoBehaviour
     {
         ArrayList particleList = GameObject.Find("ParticleEmitterObject").GetComponent<ParticleEmitter>().particleList;
         GameObject plane = GameObject.Find("PlaneObject").GetComponent<Plane>().plane;
-
+        //make vertices with the game positions
+        Vector3[] vertices1 =
+        {
+        new Vector3(particle.transform.position.x + vertices[0].x, particle.transform.position.y + vertices[0].y, particle.transform.position.z + vertices[0].z),
+        new Vector3(particle.transform.position.x + vertices[1].x, particle.transform.position.y + vertices[1].y, particle.transform.position.z + vertices[1].z),
+        new Vector3(particle.transform.position.x + vertices[2].x, particle.transform.position.y + vertices[2].y, particle.transform.position.z + vertices[2].z),
+        new Vector3(particle.transform.position.x + vertices[3].x, particle.transform.position.y + vertices[3].y, particle.transform.position.z + vertices[3].z),
+        new Vector3(particle.transform.position.x + vertices[4].x, particle.transform.position.y + vertices[4].y, particle.transform.position.z + vertices[4].z),
+        new Vector3(particle.transform.position.x + vertices[5].x, particle.transform.position.y + vertices[5].y, particle.transform.position.z + vertices[5].z),
+        new Vector3(particle.transform.position.x + vertices[6].x, particle.transform.position.y + vertices[6].y, particle.transform.position.z + vertices[6].z),
+        new Vector3(particle.transform.position.x + vertices[7].x, particle.transform.position.y + vertices[7].y, particle.transform.position.z + vertices[7].z)
+        };
         // colides with other particle
         for (int i = 0; i < particleList.Count; i++)
         {
-            GameObject particle2 = (GameObject)particleList[i];
-            if (!particle2.Equals(particle))
-            {
-                if (particle2.transform.position.x <= particle.transform.position.x + size && particle2.transform.position.x >= particle.transform.position.x - size
-                    && particle2.transform.position.y <= particle.transform.position.y + size && particle2.transform.position.x >= particle.transform.position.x - size
-                    && particle2.transform.position.z <= particle.transform.position.z + size && particle2.transform.position.z >= particle.transform.position.z - size)
-                {
-                    //              Vector3 direction = new Vector3(position.x - particle2.transform.position.x, position.y - particle2.transform.position.y, position.z - particle2.transform.position.z); 
-                    //              velocity = new Vector3(velocity.x * (0.9f), velocity.y * (0.9f), velocity.z * (0.9f));
-                }
-            }
+            //GameObject particle2 = (GameObject)particleList[i];
+            //Vector3[] fullVertices2 = particle2.GetComponent<Vector3[]>();
+            //Vector3[] vertices2 =
+            //{
+            //new Vector3(particle2.transform.position.x + fullVertices2[1].x, particle2.transform.position.y + fullVertices2[1].y, particle2.transform.position.z + fullVertices2[1].z),
+            //new Vector3(particle2.transform.position.x + fullVertices2[6].x, particle2.transform.position.y + fullVertices2[6].y, particle2.transform.position.z + fullVertices2[6].z)
+            //};
+            //if (!particle2.Equals(particle))
+            //{
+            //    //iterate over vertices
+            //    for(int j = 0; j < 8; j++)
+            //    {
+
+            //        //if this particle's vertice is in another particles bounds
+            //        if ((vertices1[j].x <= vertices2[0].x && vertices1[j].x >= vertices2[1].x || vertices1[j].x >= vertices2[0].x && vertices1[j].x <= vertices2[1].x) 
+            //            && (vertices1[j].y <= vertices2[0].y && vertices1[j].y >= vertices2[1].y || vertices1[j].y >= vertices2[0].y && vertices1[j].y <= vertices2[1].y)
+            //            && (vertices1[j].z <= vertices2[0].z && vertices1[j].z >= vertices2[1].z || vertices1[j].z >= vertices2[0].z && vertices1[j].z <= vertices2[1].z))
+            //        {
+            //            Vector3 velocity2 = particle2.GetComponents<Vector3>()[1];
+            //            Vector3 save = velocity;
+            //            velocity = new Vector3(velocity.x + velocity2.x, velocity.y + velocity2.y, velocity.z + velocity2.z);
+            //            velocity2 = new Vector3(velocity2.x + save.x, velocity2.y + save.y, velocity2.z + save.z);
+            //        }
+            //    }
+            //    //if (particle2.transform.position.x <= particle.transform.position.x + size && particle2.transform.position.x >= particle.transform.position.x - size
+            //    //    && particle2.transform.position.y <= particle.transform.position.y + size && particle2.transform.position.x >= particle.transform.position.x - size
+            //    //    && particle2.transform.position.z <= particle.transform.position.z + size && particle2.transform.position.z >= particle.transform.position.z - size)
+            //    //{
+            //    //    //              Vector3 direction = new Vector3(position.x - particle2.transform.position.x, position.y - particle2.transform.position.y, position.z - particle2.transform.position.z); 
+            //    //    //              velocity = new Vector3(velocity.x * (0.9f), velocity.y * (0.9f), velocity.z * (0.9f));
+            //    //}
+            //}
         }
 
         //colides with plane
         if (particle.transform.position.y - size <= plane.transform.position.y && velocity.y < 0)
         {
             //apply forceupward 
-            velocity.y = velocity.y * (-0.8f / mass);
+            velocity.y = velocity.y * -0.5f / mass;
         }
+        //keep from falling through plane
         else if (particle.transform.position.y < plane.transform.position.y)
         {
             position.y = plane.transform.position.y + size;
