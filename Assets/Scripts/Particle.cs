@@ -238,8 +238,8 @@ public class Particle : MonoBehaviour
         // colides with other particle
         for (int i = 0; i < particleList.Count; i++)
         {
-            //GameObject particle2 = (GameObject)particleList[i];
-            //Vector3[] fullVertices2 = particle2.GetComponent<Vector3[]>();
+            //Particle particle2 = particleList[i];
+            //Vector3[] fullVertices2 = particle2
             //Vector3[] vertices2 =
             //{
             //new Vector3(particle2.transform.position.x + fullVertices2[1].x, particle2.transform.position.y + fullVertices2[1].y, particle2.transform.position.z + fullVertices2[1].z),
