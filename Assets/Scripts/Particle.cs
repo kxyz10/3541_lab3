@@ -237,7 +237,7 @@ public class Particle : MonoBehaviour
         };
 
         //colides with plane
-        if (particle.transform.position.y - 2 <= plane.transform.position.y && velocity.y < 0)
+        if (particle.transform.position.y - 2 <= plane.transform.position.y && velocity.y < 0 && particle.transform.position.x < 10 && particle.transform.position.x > -10 && particle.transform.position.z < 10 && particle.transform.position.z > -10)
         {
             //apply forceupward 
             velocity.y = velocity.y * -0.5f / mass;
@@ -267,23 +267,45 @@ public class Particle : MonoBehaviour
             {
                 //float distance = Mathf.Sqrt(Mathf.Pow(particle.transform.position.x - obj.transform.position.x, 2) + Mathf.Pow(particle.transform.position.y - obj.transform.position.y, 2) + Mathf.Pow(particle.transform.position.z - obj.transform.position.z, 2));
                 //if (distance <= 2)
-                if(Vector3.Distance(particle.transform.position, particle2.transform.position) <= 2.0f)
+                if(Vector3.Distance(particle.transform.position, particle2.transform.position) <= 2.1f)
                 {
                     //Vector3 velocity2 = particle2.velocity;
                     Vector3 save = velocity;
 
-                    if (particle.transform.position.y > particle2.transform.position.y)
+                    if (particle.transform.position.x > particle2.transform.position.x)
                     {
-                        velocity.y = velocity.y * -0.3f / mass;
-                        particle2.velocity.y = particle2.velocity.y * 1.3f / particle2.mass;
+                        velocity = new Vector3(velocity.y, velocity.y, velocity.z);
+                        particle2.velocity = new Vector3(-particle2.velocity.y, particle2.velocity.y, particle2.velocity.z);
                     }
                     else
                     {
-                        velocity.y = velocity.y * 1.3f / mass;
-                        particle2.velocity.y = particle2.velocity.y * -0.3f / particle2.mass;
+                        velocity = new Vector3(-velocity.y, velocity.y, velocity.z);
+                        particle2.velocity = new Vector3(particle2.velocity.y, particle2.velocity.y, particle2.velocity.z);
                     }
-                    velocity = new Vector3(velocity.x, particle2.mass * (particle2.velocity.y - velocity.y) / (mass + particle2.mass), velocity.y);
-                    particle2.velocity = new Vector3(particle2.velocity.x, mass * (save.y - particle2.velocity.y) / (particle2.mass + mass), particle2.velocity.y);
+
+                    if (particle.transform.position.y > particle2.transform.position.y)
+                    {
+                        velocity = new Vector3(velocity.x, -2*velocity.y, velocity.z);
+                        particle2.velocity = new Vector3(particle2.velocity.x, 2*particle2.velocity.y, particle2.velocity.z);
+                    }
+                    else
+                    {
+                        velocity = new Vector3(velocity.x, 2*velocity.y, velocity.z);
+                        particle2.velocity = new Vector3(particle2.velocity.x, -2*particle2.velocity.y, particle2.velocity.z);
+                    }
+
+                    if (particle.transform.position.z > particle2.transform.position.z)
+                    {
+                        velocity = new Vector3(velocity.x, velocity.y, velocity.y);
+                        particle2.velocity = new Vector3(particle2.velocity.x, particle2.velocity.y, -particle2.velocity.y);
+                    }
+                    else
+                    {
+                        velocity = new Vector3(velocity.x, velocity.y, -velocity.y);
+                        particle2.velocity = new Vector3(particle2.velocity.x, particle2.velocity.y, particle2.velocity.y) ;
+                    }
+                    //velocity = new Vector3(velocity.x, particle2.mass * (particle2.velocity.y - velocity.y) / (mass + particle2.mass), velocity.z);
+                    //particle2.velocity = new Vector3(particle2.velocity.x, mass * (save.y - particle2.velocity.y) / (particle2.mass + mass), particle2.velocity.z);
 
                     //velocity = new Vector3(velocity.x, particle2.mass * (particle2.velocity.y - velocity.y) / (mass + particle2.mass), velocity.y);
                     //particle2.velocity = new Vector3(particle2.velocity.x, mass * (save.y - particle2.velocity.y) / (particle2.mass + mass), particle2.velocity.y);
