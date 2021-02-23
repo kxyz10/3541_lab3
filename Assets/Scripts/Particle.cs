@@ -7,7 +7,7 @@ public class Particle : MonoBehaviour
     Vector3 position;
     Vector3 velocity;
     Vector3 acceleration;
-    float age;
+    public float age;
     public float maxAge;
     public float size;
     public float mass;
@@ -265,15 +265,33 @@ public class Particle : MonoBehaviour
 
             if (!particle2.Equals(particle))
             {
-                float distance = Mathf.Sqrt(Mathf.Pow(particle.transform.position.x - obj.transform.position.x, 2) + Mathf.Pow(particle.transform.position.y - obj.transform.position.y, 2) + Mathf.Pow(particle.transform.position.z - obj.transform.position.z, 2));
-                if (distance <= 2)
+                //float distance = Mathf.Sqrt(Mathf.Pow(particle.transform.position.x - obj.transform.position.x, 2) + Mathf.Pow(particle.transform.position.y - obj.transform.position.y, 2) + Mathf.Pow(particle.transform.position.z - obj.transform.position.z, 2));
+                //if (distance <= 2)
+                if(Vector3.Distance(particle.transform.position, particle2.transform.position) <= 2.0f)
                 {
-                    Vector3 velocity2 = particle2.velocity;
+                    //Vector3 velocity2 = particle2.velocity;
                     Vector3 save = velocity;
 
-                    velocity = new Vector3((velocity.x + velocity2.x) / Mathf.Pow(mass, 2), (velocity.y + velocity2.y) / Mathf.Pow(mass, 2), (velocity.z + velocity2.z) / Mathf.Pow(mass, 2));
-                    velocity2 = new Vector3((velocity2.x + save.x) / Mathf.Pow(particle2.mass, 2), (velocity2.y + save.y) / Mathf.Pow(particle2.mass, 2), (velocity2.z + save.z) / Mathf.Pow(particle2.mass, 2));
-                    particle2.velocity = velocity2;
+                    if (particle.transform.position.y > particle2.transform.position.y)
+                    {
+                        velocity.y = velocity.y * -0.3f / mass;
+                        particle2.velocity.y = particle2.velocity.y * 1.3f / particle2.mass;
+                    }
+                    else
+                    {
+                        velocity.y = velocity.y * 1.3f / mass;
+                        particle2.velocity.y = particle2.velocity.y * -0.3f / particle2.mass;
+                    }
+                    velocity = new Vector3(velocity.x, particle2.mass * (particle2.velocity.y - velocity.y) / (mass + particle2.mass), velocity.y);
+                    particle2.velocity = new Vector3(particle2.velocity.x, mass * (save.y - particle2.velocity.y) / (particle2.mass + mass), particle2.velocity.y);
+
+                    //velocity = new Vector3(velocity.x, particle2.mass * (particle2.velocity.y - velocity.y) / (mass + particle2.mass), velocity.y);
+                    //particle2.velocity = new Vector3(particle2.velocity.x, mass * (save.y - particle2.velocity.y) / (particle2.mass + mass), particle2.velocity.y);
+
+                    //velocity = new Vector3((velocity.x + velocity2.x) / 2  * Mathf.Pow(mass, 2), (velocity.y + velocity2.y) / 2 * Mathf.Pow(mass, 2), (velocity.z + velocity2.z) / 2 * Mathf.Pow(mass, 2));
+                    //velocity2 = new Vector3((velocity2.x + save.x) / 2 * Mathf.Pow(particle2.mass, 2), (velocity2.y + save.y) / 2 * Mathf.Pow(particle2.mass, 2), (velocity2.z + save.z) * Mathf.Pow(particle2.mass, 2));
+                    //particle2.velocity = velocity2;
+
                     ////iterate over vertices
                     //for (int j = 0; j < 8; j++)
                     //{
