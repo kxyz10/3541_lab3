@@ -19,6 +19,7 @@ Object Emitter Variation: 1/1 point
 
 Collision Detection: 2/2 points
 - Objects collide with the non-axis aligned plane and with other objects
+
 NOTE: The plane is at y=0 but we are detecting collision with the plane, not the axis. This is demonstrated by objects dropping off around the plane
 
 Collision Response: 2/2 points
@@ -29,8 +30,8 @@ Collision Response: 2/2 points
 Documentation: 1/1 points
 -This README is the documentation
 
-Extra Features 1/1points
--The feature that allows you to change how many particles per second are spawned is an extra feature
+Extra Features 1/0 points
+-The feature that allows you to change how many particles per second are spawned in an extra feature
 
 Total: 11/10
   
