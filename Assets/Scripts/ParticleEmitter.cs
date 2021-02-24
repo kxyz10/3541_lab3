@@ -6,7 +6,7 @@ public class ParticleEmitter : MonoBehaviour
 {
 
     private GameObject particleEmitter;
-    public int timeBetweenParticles = 1;
+    public float timeBetweenParticles = 1;
     private int particlesEmitted = 0;
     public GameObject ParticleObject;
     public float time = 0;
@@ -36,6 +36,22 @@ public class ParticleEmitter : MonoBehaviour
             particleList.Add(newParticle);
             time = 0;
         }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            if(timeBetweenParticles > 0.1)
+            {
+                timeBetweenParticles -= 0.1f;
+            }
+            
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+
+            timeBetweenParticles += 0.1f;
+
+        }
+
 
     }
 
